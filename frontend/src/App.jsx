@@ -114,11 +114,13 @@ export default function App() {
   const logsEndRef = useRef(null)
 
   // API base URL
-  const backendBaseUrl = window.location.origin.includes("localhost") 
-    ? "http://localhost:8000" 
-    : window.location.origin.replace("3000", "8000") // handle docker port mappings
+  const backendBaseUrl = import.meta.env.VITE_API_URL || (
+    window.location.origin.includes("localhost") 
+      ? "http://localhost:8000" 
+      : window.location.origin.replace("3000", "8000") // handle docker port mappings
+  )
 
-  const wsUrl = backendBaseUrl.replace("http://", "ws://") + "/ws/dashboard"
+  const wsUrl = backendBaseUrl.replace("https://", "wss://").replace("http://", "ws://") + "/ws/dashboard"
 
   // Fetch initial config
   const fetchConfig = async () => {
