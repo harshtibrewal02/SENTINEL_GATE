@@ -4,6 +4,7 @@ import logging
 import httpx
 import time
 from typing import Optional, Dict, Any
+from app.config import settings
 
 logger = logging.getLogger("simulator")
 
@@ -102,8 +103,8 @@ class TrafficSimulator:
                     path = clean_target
 
                 # Prepare the request to our Gateway route
-                # We hit port 8000 which is uvicorn's default
-                url = f"http://127.0.0.1:8000/gateway/{path}"
+                # We hit the dynamic port configured in settings
+                url = f"http://127.0.0.1:{settings.PORT}/gateway/{path}"
                 headers = {
                     "X-API-Key": f"apikey-{client_id}",
                     "X-Forwarded-For": f"192.168.1.{random.randint(10, 200)}"
